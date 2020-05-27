@@ -1,4 +1,5 @@
 var i = 0;
+var nnnn;
 var isEssential = false;
 
 class ShopItem {
@@ -51,11 +52,12 @@ class Storage {
 
     static displayItems(listName) {
         let lists = Storage.getItems();
+        document.querySelector('#shopList').innerHTML = "";
         for (let [key, value] of Object.entries(lists)) {
             if (key == listName) {
                 value.forEach(item => {
                     document.querySelector('#shopList').innerHTML == null ? console.log(null) : document.querySelector('#shopList').innerHTML += `<ons-list-item background-color: ${item.isEssential ? 'lightgreen' : 'lightblue'}; class='btn' id='item${i++}'> <div class='left' width='20%'> <ons-icon icon="fa-cart-arrow-down" class="list-item__icon"></ons-icon>
-                             </div>  <div class='center' width='60%'> - ${item.name} </div> <div class='right'> <ons-button data-id="${item.id}" id='btnDelete' width='20%' style='background-color: red;'> Delete </ons-button> </div> </ons-list-item>`;
+                             </div>  <div class='center' width='60%'> - ${item.name} </div> <div class='right'> <ons-button data-id="${item.id}" id='btnDeleteItem' width='20%' style='background-color: red;'> Delete </ons-button> </div> </ons-list-item>`;
                 });
             }
         }
@@ -83,7 +85,7 @@ class Storage {
         }
         localStorage.setItem('lists', JSON.stringify(lists));
         try {
-            //writeFile(JSON.stringify(items));
+            //writeFile(JSON.stringify(lists));
             ons.notification.toast(item.name + ' added to the list!', { timeout: 2000 });
         } catch (er) {
             alert(er + "write");
@@ -104,27 +106,41 @@ class Storage {
             }
         }
     }
-
-    static deleteItem(element) {
-        console.log(element)
-        if (element.id === 'btnDelete') {
-            const id = element.getAttribute('data-id');
-            const items = Storage.getItems();
+    static deleteItem(target, listName) {
+        var items;
+        var _key;
+        let lists = Storage.getItems();
+        console.log("listName :" + listName);
+        if (lists.hasOwnProperty(listName)) {
+            Object.keys(lists).forEach(key => {
+                console.log(key == listName);
+                if (key == listName) {
+                    console.log(lists[key]);
+                    items = lists[key];
+                    _key = key;
+                }
+            });
             let name;
-
+            let id = target.getAttribute('data-id')
             items.forEach((item, index) => {
+                console.log(id);
+                console.log(item.id);
                 if (item.id == id) {
                     name = item.name;
                     items.splice(index, 1);
+                    items[_key] = items;
+                    console.log(items[_key])
                 }
             });
 
-            localStorage.setItem('lists', JSON.stringify(items));
-            //writeFile(JSON.stringify(items));
+            localStorage.setItem('lists', JSON.stringify(lists));
+            Storage.displayItems(listName);
+            // //writeFile(JSON.stringify(lists));
             ons.notification.toast(name + ' deleted from the list!', { timeout: 2000 });
         }
     }
 }
+
 
 document.addEventListener('deviceready', Storage.displayLists)
 
@@ -169,6 +185,7 @@ $(function() {
             const shopList = document.querySelector('#shopList');
             console.log("data :" + page.data.listName);
             Storage.displayItems(page.data.listName);
+            nnnn = page.data.listName;
             shopList.addEventListener('click', deleteItem);
         }
     });
@@ -224,17 +241,17 @@ function listFunctions(e) {
     }
 }
 
-// function deleteItem(e) {
-//     console.log(e.target)
-//     if (e.target.id === 'btnDelete') {
-//         ons.notification.confirm('Are you sure to delete item?').then((response) => {
-//             if (response) {
-//                 Storage.deleteItem(e.target);
-//                 e.target.parentElement.parentElement.remove();
-//             }
-//         });
-//     }
-// }
+function deleteItem(e) {
+    if (e.target.id === 'btnDeleteItem') {
+        ons.notification.confirm('Are you sure to delete item?').then((response) => {
+            if (response) {
+                console.log(nnnn);
+                console.log(e.target.parentElement.parentElement);
+                Storage.deleteItem(e.target, nnnn);
+            }
+        });
+    }
+}
 
 
 function essentialProduct(e) {

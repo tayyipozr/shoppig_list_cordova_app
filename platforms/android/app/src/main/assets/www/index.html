@@ -3,7 +3,7 @@
 
 <head>
     <title>
-        TAMZ 1 Template with local files
+        Shopping List
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
@@ -23,21 +23,19 @@
                 <div class="center"></div>
             </ons-toolbar>
 
-            <ons-list class="">
-                <ons-list-header>
+            <ons-list class="" id="need" style="margin-top: 2px;">
+                <ons-list-header style="background-color: #E8F7FE;">
                     Shopping Lists
                 </ons-list-header>
-                <ons-list-item  id="need" expandable>
-                  </ons-list-item>
             </ons-list>
-            <ons-fab id="a" class="addNewItem" position="bottom right"
+            <ons-fab id="a" class="addNewList" position="bottom right"
                 style="background-color: lightblue; text-align: center;">
                 <ons-icon icon="md-plus"></ons-icon>
             </ons-fab>
         </ons-page>
     </template>
 
-    <template id="page2.html">
+    <template id="page2_html">
         <ons-page id="page2">
             <ons-toolbar style="background-color: lightblue;">
                 <div class="left">
@@ -68,6 +66,49 @@
             </div>
         </ons-page>
     </template>
+
+    <template id="page3_html">
+        <ons-page id="page3">
+            <ons-toolbar style="background-color: lightblue;">
+                <div class="left">
+                    <ons-back-button></ons-back-button>
+                </div>
+                <div class="center">
+                    Add New Shopping List
+                </div>
+            </ons-toolbar>
+            <div style="margin: 25px;">
+                <ons-col style="margin: 10px;">
+                    <ons-row style="margin: 10px;">
+                        <ons-input id="nameOfList" placeholder="Name of new list">
+                        </ons-input>
+                    </ons-row>
+                    <div style="margin: 10px; float: right;">
+                        <ons-button id="saveList" style="background-color: lightblue; color: black;"> Add to List </ons-button>
+                    </div>
+                </ons-col>
+            </div>
+        </ons-page>
+    </template>
+
+    <template id="page4_html">
+        <ons-page id="page4">
+            <ons-toolbar style="background-color: lightblue;">
+                <div class="left">
+                    <ons-back-button></ons-back-button>
+                </div>
+                <div class="center" id="listName">
+                    List Name
+                </div>
+            </ons-toolbar>
+            <ons-list id="shopList">
+                <ons-list-header>
+                    One of Shopping List
+                </ons-list-header>
+            </ons-list>
+        </ons-page>
+    </template>
+
 
     <script src="script.js"></script>
 </body>
