@@ -21,8 +21,13 @@
         <ons-page id="page1">
             <ons-toolbar style="background-color: lightblue;">
                 <div class="center"></div>
+                <div class="right" style="margin-right: 5px;">
+                    <div class="icon">
+                        <ons-icon icon="fa-heart">
+                        </ons-icon>
+                    </div>
+                </div>
             </ons-toolbar>
-
             <ons-list class="" id="need" style="margin-top: 2px;">
                 <ons-list-header style="background-color: #E8F7FE;">
                     Shopping Lists
@@ -75,11 +80,12 @@
                                 <option value="8">8</option>
                                 <option value="9">9</option>
                                 <option value="10">10</option>
-                              </ons-select>
+                            </ons-select>
                         </ons-col>
                     </ons-row>
                     <div style="margin: 10px; float: right;">
-                        <ons-button id="save" style="background-color: lightblue; color: black;"> Add to buy </ons-button>
+                        <ons-button id="save" style="background-color: lightblue; color: black;"> Add to buy
+                        </ons-button>
                     </div>
                 </ons-col>
             </div>
@@ -103,7 +109,8 @@
                         </ons-input>
                     </ons-row>
                     <div style="margin: 10px; float: right;">
-                        <ons-button id="saveList" style="background-color: lightblue; color: black;"> Add to List </ons-button>
+                        <ons-button id="saveList" style="background-color: lightblue; color: black;"> Add to List
+                        </ons-button>
                     </div>
                 </ons-col>
             </div>
@@ -128,6 +135,20 @@
         </ons-page>
     </template>
 
+    <template id="page5_html">
+        <ons-page id="page5">
+            <ons-toolbar style="background-color: lightblue;">
+                <div class="left">
+                    <ons-back-button></ons-back-button>
+                </div>
+                <div class="center">
+                    Most Used Item
+                </div>
+            </ons-toolbar>
+            <ons-list id="mostUsed">
+            </ons-list>
+        </ons-page>
+    </template>
 
     <script src="script.js"></script>
 </body>

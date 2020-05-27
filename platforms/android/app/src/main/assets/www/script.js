@@ -3,7 +3,7 @@ var nnnn;
 var isEssential = false;
 
 class ShopItem {
-    constructor(id, name, quantity, isEssential) {
+    constructor(id, name, quantity = 1, isEssential) {
         this.id = id;
         this.name = name;
         this.isEssential = isEssential;

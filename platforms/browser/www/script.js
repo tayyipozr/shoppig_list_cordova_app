@@ -75,23 +75,31 @@ class Storage {
 
     static addItem(listName, item) {
         let lists = Storage.getItems();
+        let exitst = false;
         for (let [key, value] of Object.entries(lists)) {
             console.log("key" + key);
             console.log("listName" + listName);
-            console.log("trimmed" + listName.trim());
             console.log(key == listName)
             if (key == listName) {
-                value.push(item);
+                value.forEach(element => {
+                    if (element.name == item.name) {
+                        alert("You tried to add an already existing element")
+                        exitst = true;
+                    }
+                });
+                if (!exitst) {
+                    value.push(item);
+                    Storage.addToMostUsed(item);
+                    ons.notification.toast(item.name + ' added to the list!', { timeout: 2000 });
+                    document.querySelector('#myNavigator').popPage();
+                }
             }
         }
         localStorage.setItem('lists', JSON.stringify(lists));
         try {
             //writeFile(JSON.stringify(lists));
-            ons.notification.toast(item.name + ' added to the list!', { timeout: 2000 });
         } catch (er) {
             alert(er + "write");
-        } finally {
-            document.querySelector('#myNavigator').popPage();
         }
     }
 
@@ -107,6 +115,7 @@ class Storage {
             }
         }
     }
+
     static deleteItem(target, listName) {
         var items;
         var _key;
@@ -144,6 +153,60 @@ class Storage {
             });
         }
     }
+
+    static getMostUsed() {
+        let lists;
+        if (localStorage.getItem('most') === null) {
+            lists = {};
+        } else {
+            lists = JSON.parse(localStorage.getItem('most'));
+        }
+        return lists;
+    }
+
+    static deleteFromMostUsed() {
+
+    }
+
+    static addToMostUsed(item) {
+        let mostUsed = Storage.getMostUsed();
+        let changed = false;
+        for (let key of Object.keys(mostUsed)) {
+            if (key == item.name) {
+                mostUsed[key] = ++mostUsed[key];
+                changed = true;
+                break;
+            }
+        }
+        if (!changed) {
+            mostUsed[item.name] = 0;
+        }
+        console.log(mostUsed);
+        localStorage.setItem('most', JSON.stringify(mostUsed));
+    }
+
+    static displayMostUsed() {
+        console.log("display most");
+        let most = Storage.getMostUsed();
+        console.log(most);
+        let i = 0;
+        let sorted_keys = [];
+        for (let index = 0; index < 10; index++) {
+            for (let [key, value] of Object.entries(most)) {
+                let max = Math.max(...Object.values(most));
+                if (max == value) {
+                    sorted_keys.push([key, max]);
+                    delete most[key];
+                    console.log(most);
+                    console.log(sorted_keys);
+                    break;
+                }
+            }
+        }
+        sorted_keys.forEach(list => {
+            document.querySelector('#mostUsedList').innerHTML += `<ons-list-item tappable><label class="left"><ons-checkbox input-id="check-${i}"></ons-checkbox></label><label for="check-${i++}" class="center">${list[0]}</label> <label class="right">${list[1]}</label> </ons-list-item>`;
+        });
+    }
 }
 
 
@@ -156,6 +219,11 @@ $(function() {
 
     const floatingActionButton = document.querySelector('.addNewList');
     const needList = document.querySelector('#need');
+    const mostUsed = document.querySelector('#mostUsed');
+
+    mostUsed.addEventListener('click', function() {
+        document.querySelector('#myNavigator').pushPage('page5_html');
+    });
 
     needList.addEventListener('click', listFunctions);
 
@@ -198,6 +266,11 @@ $(function() {
             nnnn = page.data.listName;
             shopList.addEventListener('click', deleteItem);
         }
+
+        if (page.id == 'page5') {
+            Storage.displayMostUsed();
+        }
+
     });
 });
 
