@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        TAMZ 1 Template with local files
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/onsenui.css">
+    <link rel="stylesheet" href="css/onsen-css-components.min.css">
+    <script src="cordova.js"></script>
+    <script src="js/onsenui.js"></script>
+    <script src="js/jquery.js"></script>
+</head>
+
+<body>
+    <ons-navigator swipeable id="myNavigator" page="page1_html"></ons-navigator>
+
+    <template id="page1_html">
+        <ons-page id="page1">
+            <ons-toolbar style="background-color: lightblue;">
+                <div class="center"></div>
+            </ons-toolbar>
+
+            <ons-list class="">
+                <ons-list-header>
+                    Shopping Lists
+                </ons-list-header>
+                <ons-list-item  id="need" expandable>
+                  </ons-list-item>
+            </ons-list>
+            <ons-fab id="a" class="addNewItem" position="bottom right"
+                style="background-color: lightblue; text-align: center;">
+                <ons-icon icon="md-plus"></ons-icon>
+            </ons-fab>
+        </ons-page>
+    </template>
+
+    <template id="page2.html">
+        <ons-page id="page2">
+            <ons-toolbar style="background-color: lightblue;">
+                <div class="left">
+                    <ons-back-button></ons-back-button>
+                </div>
+                <div class="center">
+                    Add New Product
+                </div>
+            </ons-toolbar>
+            <div style="margin: 25px;">
+                <ons-col style="margin: 10px;">
+                    <ons-row style="margin: 10px;">
+                        <ons-input id="name" placeholder="Name of product">
+                        </ons-input>
+                    </ons-row>
+                    <ons-row style="margin: 10px;">
+                        <ons-col>
+                            Essential :
+                        </ons-col>
+                        <ons-col>
+                            <ons-switch class="switch"> </ons-switch>
+                        </ons-col>
+                    </ons-row>
+                    <div style="margin: 10px; float: right;">
+                        <ons-button id="save" style="background-color: lightblue; color: black;"> Add to buy </ons-button>
+                    </div>
+                </ons-col>
+            </div>
+        </ons-page>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
