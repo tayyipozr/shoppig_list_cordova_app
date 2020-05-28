@@ -84,7 +84,7 @@ class Storage {
             if (key == listName) {
                 value.forEach(element => {
                     if (element.name == item.name) {
-                        alert("You tried to add an already existing element")
+                        alert("You tried to add an already existing shopItem")
                         exitst = true;
                     }
                 });
@@ -165,10 +165,6 @@ class Storage {
         return lists;
     }
 
-    static deleteFromMostUsed() {
-
-    }
-
     static addToMostUsed(item) {
         let mostUsed = Storage.getMostUsed();
         let changed = false;
@@ -180,7 +176,7 @@ class Storage {
             }
         }
         if (!changed) {
-            mostUsed[item.name] = 0;
+            mostUsed[item.name] = 1;
         }
         console.log(mostUsed);
         localStorage.setItem('most', JSON.stringify(mostUsed));
@@ -192,11 +188,13 @@ class Storage {
         console.log(most);
         let i = 0;
         let sorted_keys = [];
+        let sorted_keys_obj = {};
         for (let index = 0; index < 10; index++) {
             for (let [key, value] of Object.entries(most)) {
                 let max = Math.max(...Object.values(most));
                 if (max == value) {
                     sorted_keys.push([key, max]);
+                    sorted_keys_obj[key] = max;
                     delete most[key];
                     console.log(most);
                     console.log(sorted_keys);
@@ -204,6 +202,9 @@ class Storage {
                 }
             }
         }
+
+        localStorage.setItem('most', JSON.stringify(sorted_keys_obj));
+
         sorted_keys.forEach(list => {
             document.querySelector('#mostUsedList').innerHTML += `<ons-list-item tappable><label class="left"><ons-checkbox input-id="check-${i}"></ons-checkbox></label><label for="check-${i++}" class="center">${list[0]}</label> <label class="right">${list[1]}</label> </ons-list-item>`;
         });
