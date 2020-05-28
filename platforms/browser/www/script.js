@@ -3,11 +3,12 @@ var nnnn;
 var isEssential = false;
 
 class ShopItem {
-    constructor(id, name, quantity = 1, isEssential) {
+    constructor(id, name, quantity = 1, isEssential, isFav) {
         this.id = id;
         this.name = name;
         this.isEssential = isEssential;
         this.quantity = quantity;
+        this.isFav = isFav;
     }
 }
 
@@ -57,7 +58,7 @@ class Storage {
         for (let [key, value] of Object.entries(lists)) {
             if (key == listName) {
                 value.forEach(item => {
-                    document.querySelector('#shopList').innerHTML == null ? console.log(null) : document.querySelector('#shopList').innerHTML += `<ons-list-item modifier="longdivider" style="background-color: ${item.isEssential ? 'lightgreen' : 'lightblue'};" class='btn' id='item${i++}'> <div class='left' width='20%'> <ons-icon icon="fa-cart-arrow-down" class="list-item__icon"></ons-icon>
+                    document.querySelector('#shopList').innerHTML == null ? console.log(null) : document.querySelector('#shopList').innerHTML += `<ons-list-item modifier="longdivider" style="background-color: ${item.isFav ? 'lightpink' : item.isEssential ? 'lightgreen' : 'lightblue'};" class='btn' id='item${i++}'> <div class='left' width='20%'> <ons-icon icon="fa-cart-arrow-down" class="list-item__icon"></ons-icon>
                              </div>  <div class='center' width='60%'> - ${item.name} </div> <div class='right'> <ons-row style="margin-right: 10px;"> <div id="qua"> q : ${item.quantity}</div> </ons-row> <ons-row> <ons-button data-id="${item.id}" id='btnDeleteItem' width='20%' style='background-color: red;'> Delete </ons-button>  </ons-row> </div> </ons-list-item>`;
                 });
             }
@@ -136,7 +137,7 @@ class Storage {
                 if (item.id == id) {
                     name = item.name;
                     if (item.quantity > 1) {
-                        items[_key] = new ShopItem(item.id, item.name, --item.quantity, item.isEssential);
+                        items[_key] = new ShopItem(item.id, item.name, --item.quantity, item.isEssential, item.isFav);
                         console.log(items[_key])
                         localStorage.setItem('lists', JSON.stringify(lists));
                         Storage.displayItems(listName);
@@ -206,6 +207,16 @@ class Storage {
         sorted_keys.forEach(list => {
             document.querySelector('#mostUsedList').innerHTML += `<ons-list-item tappable><label class="left"><ons-checkbox input-id="check-${i}"></ons-checkbox></label><label for="check-${i++}" class="center">${list[0]}</label> <label class="right">${list[1]}</label> </ons-list-item>`;
         });
+        return sorted_keys;
+    }
+
+    static addMostUsedToAShoppingList(listName, listItems) {
+        console.log("addMostUsedToAShoppingList");
+        console.log(listName);
+        console.log(listItems);
+        listItems.forEach(element => {
+            Storage.addItem(listName, new ShopItem(Date.now(), element, 1, false, true));
+        });
     }
 }
 
@@ -247,7 +258,7 @@ $(function() {
             saveButtonSecondPage.onclick = function() {
                 name = document.querySelector('#name').value;
                 let id = Date.now();
-                var item = new ShopItem(id, name, quantity_value, isEssential);
+                var item = new ShopItem(id, name, quantity_value, isEssential, false);
                 Storage.addItem(page.data.listName, item);
             }
         }
@@ -268,9 +279,30 @@ $(function() {
         }
 
         if (page.id == 'page5') {
-            Storage.displayMostUsed();
+            let sorted_keys = Storage.displayMostUsed();
+            let transfer_button = document.querySelector('#transferButton');
+            let check_boxs = document.getElementsByTagName('ons-checkbox');
+            let checked_box = [];
+            console.log(check_boxs);
+            console.log(sorted_keys);
+            transfer_button.onclick = function() {
+                for (let index = 0; index < check_boxs.length; index++) {
+                    if (check_boxs[index].checked) {
+                        let i = null;
+                        for (let item of check_boxs[index].parentElement.parentElement.childNodes)
+                            if (item.outerHTML.includes('class="center')) {
+                                i = item;
+                                break;
+                            }
+                        checked_box.push(i.innerHTML);
+                    }
+                }
+                let whichList = document.querySelector('#whichList').value;
+                console.log("which list", whichList);
+                console.log(checked_box);
+                Storage.addMostUsedToAShoppingList(whichList, checked_box);
+            }
         }
-
     });
 });
 
