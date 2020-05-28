@@ -374,6 +374,8 @@ function essentialProduct(e) {
     isEssential = e == undefined ? false : e.value;
 }
 
+// functions for writing file and reading from file
+
 function writeFile(data) {
     window.requestFileSystem(window.PERSISTENT, 0, function(fs) {
         fs.root.getFile("data.json", { create: true, exclusive: false }, function(fileEntry) {

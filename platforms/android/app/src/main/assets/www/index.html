@@ -21,8 +21,8 @@
         <ons-page id="page1">
             <ons-toolbar style="background-color: lightblue;">
                 <div class="center"></div>
-                <div class="right" style="margin-right: 5px;">
-                    <div class="icon">
+                <div class="right" style="margin-right: 15px;">
+                    <div id="mostUsed">
                         <ons-icon icon="fa-heart">
                         </ons-icon>
                     </div>
@@ -145,8 +145,25 @@
                     Most Used Item
                 </div>
             </ons-toolbar>
-            <ons-list id="mostUsed">
+            <ons-list id="mostUsedList">
+                <ons-list-header style="background-color: #E8F7FE;">
+                    Top 10 Item
+                </ons-list-header>
             </ons-list>
+            <ons-row>
+                <ons-col style="margin-top: 20px; margin-left: 20px;">
+                    <div class="left">
+                        <ons-input type="text" , id="whichList" , placeholder="Type list name">
+                    </div>
+                </ons-col>
+                <ons-col style="margin-top: 20px; margin-right: 20px; text-align: right;">
+                    <div class="right" style="text-align: right;">
+                        <ons-button id="transferButton">
+                            Transfer
+                        </ons-button>
+                    </div>
+                </ons-col>
+            </ons-row>
         </ons-page>
     </template>
 
